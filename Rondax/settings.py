@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 """
 Django settings for Rondax project.
 
@@ -31,16 +34,142 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'exile_ui',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'formulario',
     'operacion',
     'usuarios',
-    'formulario',
+    'actividades',
+    'fullcalendar',
     'supra'
+]
+
+EXILE_UI = {
+    'site_title': 'Rondax',
+    'site_header': 'Rondax',
+    'index_title': 'Software para las rondas operativos',
+    'media': {
+        'icons':{
+            'operacion': {
+                'icon': 'build',
+                'groups': [
+                    'Operación',
+                ],
+                'models': {
+                    'Empresa': {'icon': 'business', 'group': 'Operación'},
+                    'Ciudad': {'icon': 'location_city', 'group': 'Operación'},
+                    'Planta': {'icon': 'view_carousel', 'group': 'Operación'},
+                    'Unidad': {'icon': 'widgets', 'group': 'Operación'},
+                    'Turno': {'icon': 'schedule', 'group': 'Operación' },
+                    'Equipo': {'icon': 'build', 'group': 'Operación'},
+                },
+            },
+            'usuarios': {
+                'icon': 'person',
+                'groups': [
+                    'Usuarios',
+                ],
+                'models': {
+                    'Operario': { 'icon': 'people', 'group': 'Usuarios' }
+                }
+            },
+            'formulario': {
+                'icon': 'content_paste',
+                'groups': [
+                    'Variables',
+                    'Configuración'
+                ],
+                'models':{
+                    'Tipo': {'icon':'settings', 'group': 'Configuración'},
+                    'Formulario': {'icon':'assignment', 'group': 'Variables'},
+                    'Campo': {'icon':'input', 'group':'Variables'},
+                    'Registro': {'icon':'insert_comment', 'group':'Variables'},
+                    'Valor': {'icon': 'settings', 'group':'Variables'},
+                    'Entrada': {'icon': 'assignment_returned', 'group':'Variables'}
+                }
+            },
+            'actividades': {
+                'icon': 'directions_walk',
+                'groups': [
+                    'Actividades',
+                    'Configuración'
+                ],
+                'models': {
+                    'Actividad': {'icon': 'event', 'group': 'Actividades'},
+                    'TipoActividad': {'icon': 'settings', 'group': 'Configuración'}
+                },
+                'menu-extra': [
+                    {'name': 'Calendario', 'url': '/notificaciones/schedule/', 'icon': 'event', 'group': 'Actividades'}
+                ]
+            },
+            'auth': {
+                'icon': 'security',
+                'groups': [
+                    'Seguridad',
+                ],
+                'models': {
+                    'Group': {'icon': 'people', 'group': 'Seguridad'},
+                    'User': {'icon': 'person', 'group': 'Seguridad'}
+                }
+            },
+            'logout': {
+                'icon': 'exit_to_app',
+            }
+        }
+    }
+}
+
+MENU_ORDER = [
+    {
+        'name': 'usuarios',
+        'models': [
+            'Operario',
+        ]
+    },
+    {
+        'name': 'formulario',
+        'models': [
+            'Tipo',
+            'Formulario',
+            'Campo',
+            'Registro',
+            'Valor',
+            'Entrada',
+        ]
+    },
+    {
+        'name': 'operacion',
+        'models': [
+            'Empresa',
+            'Ciudad',
+            'Planta',
+            'Unidad',
+            'Turno',
+            'Equipo',
+        ]
+    },
+    {
+        'name':'actividades',
+        'models': [
+            'Actividad',
+            'TipoActividad',
+        ]
+    },
+    {
+        'name': 'auth',
+        'models': [
+            'Group',
+            'User'
+        ]
+    },
+    {
+        'name': 'logout'
+    }
 ]
 
 MIDDLEWARE = [

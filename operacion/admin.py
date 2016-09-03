@@ -1,11 +1,10 @@
 from django.contrib import admin
+from exile_ui.admin import admin_site, ExStacked, ExTabular, DateRangeEX, DateRangeEX
 import models
 
-admin.site.register(models.Empresa)
-admin.site.register(models.Ciudad)
-admin.site.register(models.Planta)
-admin.site.register(models.Unidad)
-admin.site.register(models.Turno)
-admin.site.register(models.Equipo)
-admin.site.register(models.Medida)
-admin.site.register(models.Variable)
+admin_site.register(models.Empresa)
+admin_site.register(models.Ciudad)
+admin_site.register(models.Planta)
+admin_site.register(models.Unidad)
+admin_site.register(models.Turno)
+admin_site.register(models.Equipo)
