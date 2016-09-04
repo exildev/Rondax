@@ -116,7 +116,6 @@ def activities(request, start, end, now):
     equipo =  request.GET.get('equipo', '0')
     turno = request.GET.get('turno', '0')
 
-    print start, end
     if tipo_selected != '0':
         acts = acts.filter(tipo_de_actividad=int(tipo_selected))
     # end if
@@ -166,6 +165,18 @@ def activities(request, start, end, now):
                     'now': now.strftime("%Y-%m-%d %I:%M%p"),
                     'start': nextdate.strftime("%Y-%m-%d"),
                     "urli": reverse('admin:%s_%s_change' % (act._meta.app_label,  act._meta.model_name),  args=[act.pk]),
+                    'equipo': {
+                        'nombre': act.equipo.nombre,
+                        'descripcion': act.equipo.descripcion,
+                        'turno': act.equipo.turno.nombre,
+                        'unidad': {
+                            'nombre': act.equipo.unidad.nombre,
+                            'planta': {
+                                'nombre': act.equipo.unidad.planta.nombre,
+                                'ciudad': act.equipo.unidad.planta.ciudad.nombre,
+                            }
+                        }
+                    },
                     'type': 'Actividad'
                 })
             # end while
