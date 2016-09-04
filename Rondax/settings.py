@@ -54,6 +54,11 @@ EXILE_UI = {
     'site_header': 'Rondax',
     'index_title': 'Software para las rondas operativos',
     'media': {
+        'logo': {
+            'dashboard': '/media/piscix_logo/Icono-f-t.png',
+            'page': '/media/piscix_logo/Icono-200px.png',
+            'login': '/media/piscix_logo/Icono-s-t.png'
+        },
         'icons':{
             'operacion': {
                 'icon': 'build',
@@ -214,7 +219,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'rondax',
         'USER': 'postgres',
-        'PASSWORD': '123456',
+        'PASSWORD': 'Exile*74522547',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
