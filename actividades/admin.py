@@ -4,8 +4,6 @@ from django.contrib import admin
 from exile_ui.admin import admin_site, ExStacked, ExTabular, DateRangeEX, DateRangeEX
 import models
 import forms
-import nested_admin
-
 
 class TipoActividadAdmin(admin.ModelAdmin):
     form = forms.TipoActividadForm

@@ -1,11 +1,20 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from django.core.serializers.json import DjangoJSONEncoder
+from django.core.urlresolvers import reverse
+from exile_ui.admin import admin_site
 from supra import views as supra
 import models
 from usuarios import models as usuarios
+from operacion import models as operacion
 import forms
 from django.contrib.auth.decorators import login_required
+from datetime import datetime, timedelta, date
+import croniter
+import urllib2
+import json
+from Rondax.settings import EXILE_UI
 
 
 class TipoActividadFormView(supra.SupraFormView):
@@ -33,7 +42,6 @@ class ActividadListView(supra.SupraListView):
     model = models.Actividad
     list_display = ('nombre', 'descripacion', 'cliente',
                     'tipo_de_actividad', 'fecha_de_ejecucion', 'fecha_de_notificacion')
-    list_filter = ['piscina__piscinero']
     serarch_fields = list_display
 # end class
 
@@ -43,19 +51,15 @@ class ActividadListView(supra.SupraListView):
 def schedule(request):
 
     menu_list = admin_site.get_app_list(request)
-    tipos = actividades.TipoActividad.objects.all()
-    piscinas = usuarios.Piscina.objects.all()
-    piscineros = usuarios.Piscinero.objects.all()
-    clientes = usuarios.Cliente.objects.all()
+    tipos = models.TipoActividad.objects.all()
+    equipos = operacion.Equipo.objects.all()
     obj = {
         'menu_list': menu_list,
         'user': request.user,
         'funcname': 'Calendario',
         'model': 'Actividades',
         'tipos': tipos,
-        'piscinas': piscinas,
-        'piscineros': piscineros,
-        'clientes': clientes,
+        'equipos': equipos,
         'data': dict(request.GET.iterlists())
     }
     extra_context = dict(dict(obj).items() + EXILE_UI['media'].items())
@@ -93,22 +97,10 @@ def calendar(request):
         # end try
     # end if
     key = request.GET.get('key', False)
-    piscinero = request.GET.get('piscinero', request.user.pk)
-    if request.user.is_authenticated():
-        piscinero = usuarios.Piscinero.objects.filter(pk = piscinero).first()
-    else:
-        piscinero = False
     # end if
-    print piscinero
     if start and end:
         if novedad_select == '0' or novedad_select == '1':
-            dates = dates + activities(request, start, end, now, piscinero)
-        # end if
-        if (novedad_select == '0' or novedad_select == '2') and not piscinero:
-            dates = dates + seguimientos(request, start, end, now)
-        # end if
-        if (novedad_select == '0' or novedad_select == '3') and not piscinero:
-            dates = dates + cumpleanios(request, start, end, now)
+            dates = dates + activities(request, start, end, now)
         # end if
     # end if
     return HttpResponse(json.dumps(dates, cls=DjangoJSONEncoder), content_type="application/json")
@@ -116,34 +108,14 @@ def calendar(request):
 
 
 
-def activities(request, start, end, now, piscinero):
-    acts = actividades.Actividad.objects.all()
+def activities(request, start, end, now):
+    acts = models.Actividad.objects.all()
     tipo_selected = request.GET.get('tipo_selected', '0')
 
     if tipo_selected != '0':
         acts = acts.filter(tipo_de_actividad=int(tipo_selected))
     # end if
 
-    piscina = request.GET.get('piscina', '0')
-
-    if piscina != '0':
-        acts = acts.filter(piscina=int(piscina))
-    # end if
-
-    cliente = request.GET.get('cliente', '0')
-    if cliente != '0':
-        acts = acts.filter(piscina__casa__cliente=int(cliente))
-    # end if
-    if piscinero:
-        acts = acts.filter(piscina__asignacionpiscinero__piscinero=piscinero)
-    # end if
-    acts = acts.extra({
-        'piscinero':
-            'select group_concat(piscinero_id) from usuarios_asignacionpiscinero where piscina_id=actividades_actividad.piscina_id ',
-        'users':
-            'select group_concat(username) from usuarios_asignacionpiscinero join auth_user on piscina_id=actividades_actividad.piscina_id and auth_user.id = usuarios_asignacionpiscinero.piscinero_id'
-
-    })
     dates = []
     for act in acts:
 
@@ -151,12 +123,9 @@ def activities(request, start, end, now, piscinero):
             dates.append({
                 'pk': act.id,
                 'color': act.tipo_de_actividad.color,
-                'title': "%s, %s" % (act.nombre, str(act.piscina)),
+                'title': "%s, %s" % (act.nombre, str(act.equipo)),
                 'now': now.strftime("%Y-%m-%d %I:%M%p"),
                 'start': act.fecha_de_ejecucion.strftime("%Y-%m-%d"),
-                "_send_to_": ['Piscinero'],
-                "users": act.users,
-                'piscineros': act.piscinero,
                 "urli": reverse('admin:%s_%s_change' % (act._meta.app_label,  act._meta.model_name),  args=[act.pk]),
                 'type': 'Actividad'
             })
@@ -175,13 +144,10 @@ def activities(request, start, end, now, piscinero):
                     'pk': act.id,
                     'color': color,
                     'cron': str_cron,
-                    'title': "%s, %s" % (act.nombre, unicode(act.piscina)),
+                    'title': "%s, %s" % (act.nombre, unicode(act.equipo)),
                     'now': now.strftime("%Y-%m-%d %I:%M%p"),
                     'start': nextdate.strftime("%Y-%m-%d"),
-                    "_send_to_": ['Piscinero'],
-                    "users": act.users,
                     "urli": reverse('admin:%s_%s_change' % (act._meta.app_label,  act._meta.model_name),  args=[act.pk]),
-                    'piscineros': act.piscinero,
                     'type': 'Actividad'
                 })
             # end while

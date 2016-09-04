@@ -2,6 +2,8 @@
 from django.db import models
 from binary import ByteAField
 from usuarios import models as usuarios
+from operacion import models as operacion
+
 
 class Tipo(models.Model):
 	FORMAS = (
@@ -26,6 +28,7 @@ class Tipo(models.Model):
 
 class Formulario(models.Model):
 	nombre = models.CharField(max_length=45)
+	equipo = models.ForeignKey(operacion.Equipo)
 	fecha  = models.DateTimeField(auto_now_add=True)
 
 	def __unicode__(self):
@@ -53,7 +56,7 @@ class Registro(models.Model):
 class Valor(models.Model):
 	tipo  = models.ForeignKey(Tipo)
 	valor = ByteAField()
-	
+
 	def __unicode__(self):
 		return str(self.valor).decode('utf-8')
 	#end def

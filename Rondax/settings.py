@@ -41,9 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'formulario',
-    'operacion',
     'usuarios',
+    'operacion',
+    'formulario',
     'actividades',
     'fullcalendar',
     'supra'
@@ -104,7 +104,7 @@ EXILE_UI = {
                     'TipoActividad': {'icon': 'settings', 'group': 'Configuración'}
                 },
                 'menu-extra': [
-                    {'name': 'Calendario', 'url': '/notificaciones/schedule/', 'icon': 'event', 'group': 'Actividades'}
+                    {'name': 'Calendario', 'url': '/actividades/schedule/', 'icon': 'event', 'group': 'Actividades'}
                 ]
             },
             'auth': {
@@ -158,6 +158,9 @@ MENU_ORDER = [
         'models': [
             'Actividad',
             'TipoActividad',
+        ],
+        'menu-extra': [
+            'Calendario'
         ]
     },
     {
@@ -172,7 +175,7 @@ MENU_ORDER = [
     }
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -255,3 +258,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

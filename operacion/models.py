@@ -19,6 +19,11 @@ class Empresa(models.Model):
 class Ciudad(models.Model):
     nombre = models.CharField(max_length=200)
 
+    class Meta:
+        verbose_name = "Ciudad"
+        verbose_name_plural = "Ciudades"
+    # end class
+
     def __unicode__(self):
         return u'%s' % (self.nombre)
     # end def
@@ -39,6 +44,11 @@ class Planta(models.Model):
 class Unidad(models.Model):
     nombre = models.CharField(max_length=200)
     planta = models.ForeignKey(Planta)
+
+    class Meta:
+        verbose_name = "Unidad"
+        verbose_name_plural = "Unidades"
+    # end class
 
     def __unicode__(self):
         return u'%s Planta: %s' % (self.nombre, self.planta.nombre)

@@ -12,7 +12,7 @@ class CampoInline(admin.TabularInline):
 class FormularioAdmin(admin.ModelAdmin):
 	search_fields = ('nombre', 'fecha')
 	list_filter = ('fecha', )
-	list_display = ('nombre', 'fecha')
+	list_display = ('nombre', 'equipo','fecha')
 	model=models.Formulario
 	form = forms.FormularioForm
 	inlines = [CampoInline]
