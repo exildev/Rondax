@@ -15,9 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from exile_ui.admin import admin_site
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
-    url(r'^dashboard/', admin.site.urls),
+    url(r'^$', RedirectView.as_view(url='/dashboard', permanent=True)),
+    url(r'^dashboard/', admin_site.urls),
     url(r'^formulario/', include('formulario.urls')),
     url(r'^actividades/', include('actividades.urls')),
     url(r'^usuarios/', include('usuarios.urls')),

@@ -53,6 +53,8 @@ def schedule(request):
     menu_list = admin_site.get_app_list(request)
     tipos = models.TipoActividad.objects.all()
     equipos = operacion.Equipo.objects.all()
+    turnos =  operacion.Turno.objects.all()
+
     obj = {
         'menu_list': menu_list,
         'user': request.user,
@@ -60,6 +62,7 @@ def schedule(request):
         'model': 'Actividades',
         'tipos': tipos,
         'equipos': equipos,
+        'turnos': turnos,
         'data': dict(request.GET.iterlists())
     }
     extra_context = dict(dict(obj).items() + EXILE_UI['media'].items())
@@ -111,11 +114,21 @@ def calendar(request):
 def activities(request, start, end, now):
     acts = models.Actividad.objects.all()
     tipo_selected = request.GET.get('tipo_selected', '0')
+    equipo =  request.GET.get('equipo', '0')
+    turno = request.GET.get('turno', '0')
 
     if tipo_selected != '0':
         acts = acts.filter(tipo_de_actividad=int(tipo_selected))
     # end if
 
+    if equipo != '0':
+        acts = acts.filter(equipo=int(equipo))
+    # end if
+
+    if turno != '0':
+        acts = acts.filter(equipo__turno=int(turno))
+    # end if
+    
     dates = []
     for act in acts:
 
