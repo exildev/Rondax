@@ -100,7 +100,6 @@ def calendar(request):
         # end try
     # end if
     key = request.GET.get('key', False)
-    # end if
     if start and end:
         if novedad_select == '0' or novedad_select == '1':
             dates = dates + activities(request, start, end, now)
@@ -117,6 +116,7 @@ def activities(request, start, end, now):
     equipo =  request.GET.get('equipo', '0')
     turno = request.GET.get('turno', '0')
 
+    print start, end
     if tipo_selected != '0':
         acts = acts.filter(tipo_de_actividad=int(tipo_selected))
     # end if
@@ -144,8 +144,13 @@ def activities(request, start, end, now):
             })
         else:
             str_cron = get_cron(act)
-            cron = croniter.croniter(str_cron, datetime.combine(act.fecha_de_ejecucion, datetime.min.time()))
-            nextdate = start
+            if datetime.combine(act.fecha_de_ejecucion, datetime.min.time()) > start:
+                fecha_init = act.fecha_de_ejecucion
+            else:
+                fecha_init = start
+            # end if
+            cron = croniter.croniter(str_cron, datetime.combine(fecha_init, datetime.min.time()))
+            nextdate = fecha_init
             while nextdate <= end:
                 nextdate = cron.get_next(datetime)
                 if nextdate >= now:
