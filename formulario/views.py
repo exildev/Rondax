@@ -2,6 +2,7 @@ from supra import views as supra
 import forms 
 import models
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 supra.SupraConf.ACCECC_CONTROL["allow"] = True
 
@@ -28,7 +29,7 @@ class RegistroCreateSupraForm(supra.SupraFormView):
 
 	@method_decorator(csrf_exempt)
 	def dispatch(self, request, *args, **kwargs):
-		return super(RegistroSupraForm, self).dispatch(request, *args, **kwargs)
+		return super(RegistroCreateSupraForm, self).dispatch(request, *args, **kwargs)
 	# end def
 	
 	model = models.Registro
