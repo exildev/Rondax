@@ -17,6 +17,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from exile_ui.admin import admin_site
 from django.views.generic.base import RedirectView
+from django.conf import settings
 
 urlpatterns = [
     url(r'^$', RedirectView.as_view(url='/dashboard', permanent=True)),
@@ -25,3 +26,9 @@ urlpatterns = [
     url(r'^actividades/', include('actividades.urls')),
     url(r'^usuarios/', include('usuarios.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+    ]
+# end if

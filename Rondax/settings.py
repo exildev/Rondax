@@ -55,9 +55,9 @@ EXILE_UI = {
     'index_title': 'Software para las rondas operativos',
     'media': {
         'logo': {
-            'dashboard': '/media/piscix_logo/Icono-f-t.png',
-            'page': '/media/piscix_logo/Icono-200px.png',
-            'login': '/media/piscix_logo/Icono-s-t.png'
+            'dashboard': '/media/web_hi_res_512.png',
+            'page': '/media/ic_launcher.png',
+            'login': '/media/web_hi_res_512.png'
         },
         'icons':{
             'operacion': {
