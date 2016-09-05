@@ -20,3 +20,9 @@ class RegistroCreateSupraForm(supra.SupraFormView):
 	model = models.Registro
 	form_class = forms.RegistroCreateForm
 # end class
+
+class CampoListView(supra.SupraListView):
+	model = models.Campo
+	list_display = ['nombre', 'tipo__nombre', 'formulario']
+
+# end def
