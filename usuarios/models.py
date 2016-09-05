@@ -8,4 +8,3 @@ from operacion import models as operacion
 class Operario(User):
     turno = models.ForeignKey(operacion.Turno)
 # end class
-# Create your models here.

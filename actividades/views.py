@@ -71,7 +71,6 @@ def schedule(request):
 # edn def
 
 def calendar(request):
-
     start = request.GET.get('start', False)
     end = request.GET.get('end', False)
     novedad_select = request.GET.get('novedad_select', '0')
@@ -85,7 +84,7 @@ def calendar(request):
         try:
             print start
             parts = start.split('-')
-            start = datetime(int(parts[0]), int(parts[1]) + 1, int(parts[2]))
+            start = datetime(int(parts[0]), int(parts[1]) + 0, int(parts[2]))
         except Exception as e:
             print e
         # end try
@@ -95,7 +94,7 @@ def calendar(request):
     else:
         try:
             parts = end.split('-')
-            end = datetime(int(parts[0]), int(parts[1]) + 1, int(parts[2]))
+            end = datetime(int(parts[0]), int(parts[1]) + 0, int(parts[2]))
         except Exception as e:
             print e
         # end try
@@ -112,10 +111,16 @@ def calendar(request):
 
 
 def activities(request, start, end, now):
+
+    operario = usuarios.Operario.objects.filter(pk = request.user.pk)
     acts = models.Actividad.objects.all()
     tipo_selected = request.GET.get('tipo_selected', '0')
     equipo =  request.GET.get('equipo', '0')
     turno = request.GET.get('turno', '0')
+
+    if operario:
+        acts = acts.filter(turno=operario.turno)
+    # end if
 
     if tipo_selected != '0':
         acts = acts.filter(tipo_de_actividad=int(tipo_selected))
@@ -128,7 +133,8 @@ def activities(request, start, end, now):
     if turno != '0':
         acts = acts.filter(equipo__turno=int(turno))
     # end if
-    
+
+
     dates = []
     for act in acts:
 
@@ -161,8 +167,10 @@ def activities(request, start, end, now):
             else:
                 fecha_init = start
             # end if
+            fecha_init = start
             cron = croniter.croniter(str_cron, datetime.combine(fecha_init, datetime.min.time()))
             nextdate = fecha_init
+            print 'end', end, type(end)
             while nextdate <= end:
                 nextdate = cron.get_next(datetime)
                 if nextdate >= now:
