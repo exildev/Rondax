@@ -2,6 +2,8 @@ from supra import views as supra
 import forms 
 import models
 
+supra.SupraConf.ACCECC_CONTROL["allow"] = True
+
 class RegistroSupraForm(supra.SupraFormView):
 	model = models.Registro
 	def get_form_class(self):
@@ -14,7 +16,6 @@ class RegistroSupraForm(supra.SupraFormView):
 		return self.form
 	#end def
 # end class
-
 
 class RegistroCreateSupraForm(supra.SupraFormView):
 	model = models.Registro
