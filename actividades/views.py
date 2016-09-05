@@ -171,6 +171,9 @@ def activities(request, start, end, now):
                     color = 'gray'
                 # end if
                 form = formulario.Formulario.objects.filter(equipo = act.equipo).first()
+                if form:
+                    form = form.pk
+                # end if
                 dates.append({
                     'pk': act.id,
                     'color': color,
@@ -190,7 +193,7 @@ def activities(request, start, end, now):
                                 'ciudad': act.equipo.unidad.planta.ciudad.nombre,
                             }
                         },
-                        'formulario': form.pk
+                        'formulario': form
                     },
                     'type': 'Actividad'
                 })
