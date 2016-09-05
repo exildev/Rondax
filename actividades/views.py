@@ -8,6 +8,7 @@ from supra import views as supra
 import models
 from usuarios import models as usuarios
 from operacion import models as operacion
+from formulario import models as formulario
 import forms
 from django.contrib.auth.decorators import login_required
 from datetime import datetime, timedelta, date
@@ -169,6 +170,7 @@ def activities(request, start, end, now):
                 else:
                     color = 'gray'
                 # end if
+                form = formulario.Formulario.objects.filter(equipo = act.equipo).first()
                 dates.append({
                     'pk': act.id,
                     'color': color,
@@ -187,7 +189,8 @@ def activities(request, start, end, now):
                                 'nombre': act.equipo.unidad.planta.nombre,
                                 'ciudad': act.equipo.unidad.planta.ciudad.nombre,
                             }
-                        }
+                        },
+                        'formulario': form.pk
                     },
                     'type': 'Actividad'
                 })
