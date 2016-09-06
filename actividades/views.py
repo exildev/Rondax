@@ -118,10 +118,6 @@ def activities(request, start, end, now):
     equipo =  request.GET.get('equipo', '0')
     turno = request.GET.get('turno', '0')
 
-    if operario:
-        acts = acts.filter(turno=operario.turno)
-    # end if
-
     if tipo_selected != '0':
         acts = acts.filter(tipo_de_actividad=int(tipo_selected))
     # end if
