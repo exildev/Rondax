@@ -147,7 +147,7 @@ Calendario de actividades
 						{%for turno in turnos%}
 						<li>
 							<label for="id{{turno.nombre}}">{{turno.nombre}}</label>
-							<input{% if data.turnoo.0 == turno.pk|stringformat:'i' %} checked{% endif %} value="{{turno.pk}}" type="radio" name="turno" id="id{{turno.nombre}}"/>
+							<input{% if data.turno.0 == turno.pk|stringformat:'i' %} checked{% endif %} value="{{turno.pk}}" type="radio" name="turno" id="id{{turno.nombre}}"/>
 						</li>
 						{% endfor %}
 					<ul>

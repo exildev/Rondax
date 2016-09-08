@@ -58,6 +58,8 @@ class Unidad(models.Model):
 
 class Turno(models.Model):
     nombre = models.CharField(max_length=200)
+    hora_inicio = models.TimeField()
+    hora_fin = models.TimeField()
 
     def __unicode__(self):
         return u'%s' % (self.nombre)
@@ -68,10 +70,9 @@ class Turno(models.Model):
 class Equipo(models.Model):
     nombre = models.CharField(max_length=200)
     descripcion = models.TextField(max_length=400)
-    turno = models.ForeignKey(Turno)
     unidad = models.ForeignKey(Unidad)
 
     def __unicode__(self):
-        return u'%s Turno:%s' % (self.nombre, self.turno.nombre)
+        return u'%s' % (self.nombre, )
     # end def
 # end class
