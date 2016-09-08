@@ -12,9 +12,6 @@ class OperarioForm(UserCreationForm):
         super(OperarioForm, self).__init__(*args, **kwargs)
         self.fields['password1'].label = "Contraseña"
         self.fields['password2'].label = "Confirmar contraseña"
-        self.fields['fecha_nacimiento'].widget = DatePickerWidget(
-            attrs={'class': 'date'},
-            format="%m/%d/%Y")
     # end def
 
     class Meta:
