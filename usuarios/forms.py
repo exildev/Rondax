@@ -9,7 +9,7 @@ import models
 class OperarioForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
-        super(PiscineroForm, self).__init__(*args, **kwargs)
+        super(OperarioForm, self).__init__(*args, **kwargs)
         self.fields['password1'].label = "Contraseña"
         self.fields['password2'].label = "Confirmar contraseña"
         self.fields['fecha_nacimiento'].widget = DatePickerWidget(
