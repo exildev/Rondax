@@ -28,7 +28,7 @@ class Actividad(models.Model):
     fecha_de_ejecucion = models.DateField()
     repetir_cada = models.TextField(default=0)
     unidad_de_repeticion = models.IntegerField(choices=(
-        (3, "Mes(es)", ), (4, "Año(s)", ), ), null=True, blank=True, default=3)
+        (3, "Mes(es)", ), (4, "Año(s)", ),  (5, "Hora(s)", ), ), null=True, blank=True, default=3)
     # Por cuando se repite
 
     class Meta:

@@ -71,7 +71,6 @@ def schedule(request):
 # edn def
 
 def calendar(request):
-
     start = request.GET.get('start', False)
     end = request.GET.get('end', False)
     novedad_select = request.GET.get('novedad_select', '0')
@@ -85,7 +84,7 @@ def calendar(request):
         try:
             print start
             parts = start.split('-')
-            start = datetime(int(parts[0]), int(parts[1]) + 1, int(parts[2]))
+            start = datetime(int(parts[0]), int(parts[1]) + 0, int(parts[2]))
         except Exception as e:
             print e
         # end try
@@ -95,7 +94,7 @@ def calendar(request):
     else:
         try:
             parts = end.split('-')
-            end = datetime(int(parts[0]), int(parts[1]) + 1, int(parts[2]))
+            end = datetime(int(parts[0]), int(parts[1]) + 0, int(parts[2]))
         except Exception as e:
             print e
         # end try
@@ -112,6 +111,8 @@ def calendar(request):
 
 
 def activities(request, start, end, now):
+
+    operario = usuarios.Operario.objects.filter(pk = request.user.pk).first()
     acts = models.Actividad.objects.all()
     tipo_selected = request.GET.get('tipo_selected', '0')
     equipo =  request.GET.get('equipo', '0')
@@ -125,10 +126,12 @@ def activities(request, start, end, now):
         acts = acts.filter(equipo=int(equipo))
     # end if
 
-    if turno != '0':
-        acts = acts.filter(equipo__turno=int(turno))
+    if operario:
+        turno = operario.turno
+    else:
+        turno = operacion.Turno.objects.filter(pk=int(turno)).first()
     # end if
-    
+
     dates = []
     for act in acts:
 
@@ -138,7 +141,7 @@ def activities(request, start, end, now):
                 'color': act.tipo_de_actividad.color,
                 'title': "%s, %s" % (act.nombre, str(act.equipo)),
                 'now': now.strftime("%Y-%m-%d %I:%M%p"),
-                'start': act.fecha_de_ejecucion.strftime("%Y-%m-%d"),
+                'start': act.fecha_de_ejecucion.strftime("%Y-%m-%d %H:%M"),
                 "urli": reverse('admin:%s_%s_change' % (act._meta.app_label,  act._meta.model_name),  args=[act.pk]),
                 'equipo': {
                     'nombre': act.equipo.nombre,
@@ -161,42 +164,45 @@ def activities(request, start, end, now):
             else:
                 fecha_init = start
             # end if
+            fecha_init = start
             cron = croniter.croniter(str_cron, datetime.combine(fecha_init, datetime.min.time()))
             nextdate = fecha_init
             while nextdate <= end:
                 nextdate = cron.get_next(datetime)
-                if nextdate >= now:
-                    color = act.tipo_de_actividad.color
-                else:
-                    color = 'gray'
-                # end if
-                form = formulario.Formulario.objects.filter(equipo = act.equipo).first()
-                if form:
-                    form = form.pk
-                # end if
-                dates.append({
-                    'pk': act.id,
-                    'color': color,
-                    'cron': str_cron,
-                    'title': "%s, %s" % (act.nombre, unicode(act.equipo)),
-                    'now': now.strftime("%Y-%m-%d %I:%M%p"),
-                    'start': nextdate.strftime("%Y-%m-%d"),
-                    "urli": reverse('admin:%s_%s_change' % (act._meta.app_label,  act._meta.model_name),  args=[act.pk]),
-                    'equipo': {
-                        'nombre': act.equipo.nombre,
-                        'descripcion': act.equipo.descripcion,
-                        'turno': act.equipo.turno.nombre,
-                        'unidad': {
-                            'nombre': act.equipo.unidad.nombre,
-                            'planta': {
-                                'nombre': act.equipo.unidad.planta.nombre,
-                                'ciudad': act.equipo.unidad.planta.ciudad.nombre,
-                            }
+                #print 'end', turno.hora_inicio, nextdate.time()
+                if turno == None or (nextdate.time() >= turno.hora_inicio and nextdate.time() < turno.hora_fin) or (turno.hora_inicio > turno.hora_fin and (nextdate.time() >= turno.hora_inicio or nextdate.time() < turno.hora_fin)):
+                    if nextdate >= now:
+                        color = act.tipo_de_actividad.color
+                    else:
+                        color = 'gray'
+                    # end if
+                    form = formulario.Formulario.objects.filter(equipo = act.equipo).first()
+                    if form:
+                        form = form.pk
+                    # end if
+                    dates.append({
+                        'pk': act.id,
+                        'color': color,
+                        'cron': str_cron,
+                        'title': "%s, %s" % (act.nombre, unicode(act.equipo)),
+                        'now': now.strftime("%Y-%m-%d %I:%M%p"),
+                        'start': nextdate.strftime("%Y-%m-%d %H:%M"),
+                        "urli": reverse('admin:%s_%s_change' % (act._meta.app_label,  act._meta.model_name),  args=[act.pk]),
+                        'equipo': {
+                            'nombre': act.equipo.nombre,
+                            'descripcion': act.equipo.descripcion,
+                            'unidad': {
+                                'nombre': act.equipo.unidad.nombre,
+                                'planta': {
+                                    'nombre': act.equipo.unidad.planta.nombre,
+                                    'ciudad': act.equipo.unidad.planta.ciudad.nombre,
+                                }
+                            },
+                            'formulario': form
                         },
-                        'formulario': form
-                    },
-                    'type': 'Actividad'
-                })
+                        'type': 'Actividad'
+                    })
+                #end if
             # end while
         # end if
     # end for
@@ -220,6 +226,8 @@ def get_cron(instance):
             cron = "0 7 %s */%s *" % ('%(dia)s', instance.repetir_cada, )
         elif instance.unidad_de_repeticion == 4:  # intervalo anual
             cron = "0 7 %s %s/%d *" % ('%(dia)s', '%(mes)s', int(instance.repetir_cada) * 12, )
+        elif instance.unidad_de_repeticion == 5:  # intervalo horario
+            cron = "0 */%s * * *" % (instance.repetir_cada, )
         # end if
     return cron % {
         'dia': instance.fecha_de_ejecucion.day,
