@@ -28,7 +28,9 @@ class RegistroAdmin(admin.ModelAdmin):
 	#end def
 
 	def get_form(self, request, obj=None, *args, **kwargs):
-		if obj and request.user.pk == obj.operario.pk:
+		if obj and request.user.pk == obj.empleado.pk:
+			self.form = forms.RegistroEditForm.make(obj)
+		elif obj and obj.completado:
 			self.form = forms.RegistroEditForm.make(obj)
 		else:
 			self.form = forms.RegistroCreateForm
