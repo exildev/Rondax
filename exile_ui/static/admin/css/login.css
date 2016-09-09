@@ -48,8 +48,8 @@ body {
     border: none;
     border-radius: 2px;
     padding: 7px;
-    background: #f7DF00;
-    color: #fff;
+    background: #F7DF00;
+    color: #004539;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 a {
@@ -58,7 +58,7 @@ a {
 }
 .submit-row input[type="submit"]:focus {
     outline: none;
-    background: #039BE5;
+    background: #FAED9B;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 .form-row {
