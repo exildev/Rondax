@@ -16,7 +16,7 @@ body {
 /* LINKS */
 
 a:link, a:visited {
-    color: #F50057;
+    color: #004539;
     text-decoration: none;
 }
 a:focus, a:hover {
@@ -351,10 +351,10 @@ input[type=text], input[type=password], input[type=email], input[type=url], inpu
     margin-top: 0;
     outline: none;
     border: none;
-    border-bottom: 2px solid #607D8B;
+    border-bottom: 2px solid #CED426;
 }
 input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, input[type=url]:focus, input[type=number]:focus, textarea:focus, select:focus, .vTextField:focus {
-    border-color: #263238;
+    border-color: #004539;
 }
 select {
     height: 30px;
@@ -366,20 +366,20 @@ select[multiple] {
 /* FORM BUTTONS */
 
 .button, input[type=submit], input[type=button], .submit-row input, a.button, button {
-    background: #F50057;
+    background: #f7DF00;
     padding: 10px 15px;
     margin: 7px 0;
     border: none;
     border-radius: 2px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    color: #fff;
+    color: #004539;
     cursor: pointer;
 }
 a.button {
     padding: 4px 5px;
 }
 .button:active, input[type=submit]:active, input[type=button]:active, .button:focus, input[type=submit]:focus, input[type=button]:focus, .button:hover, input[type=submit]:hover, input[type=button]:hover {
-    background: #C51162;
+    background: #CED426;
 }
 .button[disabled], input[type=submit][disabled], input[type=button][disabled] {
     opacity: 0.4;
@@ -423,7 +423,7 @@ a.button {
     font-weight: 400;
     font-size: 16px;
     text-align: left;
-    background: #607D8B;
+    background: #CED426;
     color: #fff;
 }
 .module caption, .inline-group h2 {
@@ -528,18 +528,18 @@ div.system-message p.system-message-title {
 /* BREADCRUMBS */
 
 div.breadcrumbs {
-    background: #607D8B;
+    background: #CED426;
     padding: 10px 40px;
     border: none;
     font-size: 17px;
-    color: #c4dce8;
+    color: #004539;
     text-align: left;
 }
 div.breadcrumbs a {
-    color: #fff;
+    color: #004539;
 }
 div.breadcrumbs a:focus, div.breadcrumbs a:hover {
-    color: #c4dce8;
+    color: #004539;
 }
 
 /* ACTION ICONS */
@@ -594,15 +594,15 @@ a.deletelink:focus, a.deletelink:hover {
     display: block;
     float: left;
     padding: 7px;
-    background: #F50057;
+    background: #f7DF00;
     font-weight: 400;
     font-size: 14px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    color: #fff;
+    color: #004539;
 }
 .object-tools a:focus, .object-tools a:hover {
-    background-color: #C51162;
+    background-color: #CED426;
 }
 .object-tools a:focus {
     text-decoration: none;
@@ -684,7 +684,7 @@ table#change-history tbody th {
     height: 40px;
     padding: 10px 40px;
     padding-left: 0;
-    background: #263238;
+    background: #6f6c67;
     line-height: 40px;
     color: #ffc;
     overflow: hidden;
@@ -734,8 +734,8 @@ table#change-history tbody th {
 }
 #user-tools a:focus, #user-tools a:hover {
     text-decoration: none;
-    border-bottom-color: #607D8B;
-    color: #607D8B;
+    border-bottom-color: #CED426;
+    color: #CED426;
 }
 
 /* SIDEBAR */

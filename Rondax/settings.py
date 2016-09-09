@@ -52,14 +52,14 @@ INSTALLED_APPS = [
 EXILE_UI = {
     'site_title': 'Rondax',
     'site_header': 'Rondax',
-    'index_title': 'Software para las rondas operativos',
+    'index_title': 'Herramienta para la gestión de ruta mantenimiento',
     'media': {
         'logo': {
-            'dashboard': '/media/web_hi_res_512.png',
-            'page': '/media/ic_launcher.png',
-            'login': '/media/web_hi_res_512.png'
+            'dashboard': '/media/logo/Ecopetrol_big.png',
+            'page': '/media/logo/Ecopetrol_horizontal.png',
+            'login': '/media/logo/Ecopetrol_big.png'
         },
-        'icons':{
+        'icons': {
             'operacion': {
                 'icon': 'build',
                 'groups': [
@@ -70,7 +70,7 @@ EXILE_UI = {
                     'Ciudad': {'icon': 'location_city', 'group': 'Operación'},
                     'Planta': {'icon': 'view_carousel', 'group': 'Operación'},
                     'Unidad': {'icon': 'widgets', 'group': 'Operación'},
-                    'Turno': {'icon': 'schedule', 'group': 'Operación' },
+                    'Turno': {'icon': 'schedule', 'group': 'Operación'},
                     'Equipo': {'icon': 'build', 'group': 'Operación'},
                 },
             },
@@ -80,7 +80,7 @@ EXILE_UI = {
                     'Usuarios',
                 ],
                 'models': {
-                    'Operario': { 'icon': 'people', 'group': 'Usuarios' }
+                    'Operario': {'icon': 'people', 'group': 'Usuarios'}
                 }
             },
             'formulario': {
@@ -89,13 +89,13 @@ EXILE_UI = {
                     'Variables',
                     'Configuración'
                 ],
-                'models':{
-                    'Tipo': {'icon':'settings', 'group': 'Configuración'},
-                    'Formulario': {'icon':'assignment', 'group': 'Variables'},
-                    'Campo': {'icon':'input', 'group':'Variables'},
-                    'Registro': {'icon':'insert_comment', 'group':'Variables'},
-                    'Valor': {'icon': 'settings', 'group':'Variables'},
-                    'Entrada': {'icon': 'assignment_returned', 'group':'Variables'}
+                'models': {
+                    'Tipo': {'icon': 'settings', 'group': 'Configuración'},
+                    'Formulario': {'icon': 'assignment', 'group': 'Variables'},
+                    'Campo': {'icon': 'input', 'group': 'Variables'},
+                    'Registro': {'icon': 'insert_comment', 'group': 'Variables'},
+                    'Valor': {'icon': 'settings', 'group': 'Variables'},
+                    'Entrada': {'icon': 'assignment_returned', 'group': 'Variables'}
                 }
             },
             'actividades': {
@@ -159,7 +159,7 @@ MENU_ORDER = [
         ]
     },
     {
-        'name':'actividades',
+        'name': 'actividades',
         'models': [
             'Actividad',
             'TipoActividad',
@@ -220,7 +220,7 @@ DATABASES = {
         'NAME': 'rondax',
         'USER': 'postgres',
         'PASSWORD': 'Exile*74522547',
-        'HOST': '127.0.0.1',
+        'HOST': '104.236.33.228',
         'PORT': '5432',
     }
 }
