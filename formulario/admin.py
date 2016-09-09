@@ -21,7 +21,7 @@ class FormularioAdmin(admin.ModelAdmin):
 class RegistroAdmin(admin.ModelAdmin):
 	model = models.Registro
 	search_fields = ('formulario__nombre', 'operario___operario__nombre', 'operario___operario__apellido', 'fecha')
-	list_filter = ('formulario', 'completado', 'fecha')
+	list_filter = ('formulario', 'completado', 'fecha', 'completado')
 	list_display = ('formulario', 'nombre_operario', 'completado', 'fecha')
 	def nombre_operario(self, obj):
 		return "%s %s" % (obj.operario.first_name, obj.operario.last_name)
